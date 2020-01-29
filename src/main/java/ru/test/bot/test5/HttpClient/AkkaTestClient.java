@@ -5,16 +5,15 @@ import akka.http.javadsl.ConnectHttp;
 import akka.http.javadsl.HostConnectionPool;
 import akka.http.javadsl.Http;
 import akka.http.javadsl.OutgoingConnection;
-import akka.http.javadsl.model.HttpRequest;
-import akka.http.javadsl.model.HttpResponse;
-import akka.http.javadsl.model.Uri;
+import akka.http.javadsl.model.*;
 import akka.japi.Pair;
 import akka.stream.Materializer;
 import akka.stream.javadsl.Flow;
 import akka.stream.javadsl.Sink;
 import akka.stream.javadsl.Source;
-import ru.test.bot.test3.settings.Settings;
-import ru.test.bot.test3.settings.SettingsImpl;
+
+import ru.test.bot.test5.settings.Settings;
+import ru.test.bot.test5.settings.SettingsImpl;
 import scala.util.Try;
 
 import java.util.Optional;
@@ -47,7 +46,7 @@ public class AkkaTestClient {
     }
 
     public void close() {
-        System.out.println("Client close");
+        System.out.println("Shutting down client");
         Http.get(system).shutdownAllConnectionPools().whenComplete((s, f) -> system.terminate());
     }
 
@@ -77,4 +76,5 @@ public class AkkaTestClient {
                 .singleRequest(HttpRequest.create().withUri(getUri(s)), materializer)
                 .thenComposeAsync(responseHandler);
     }
+
 }
