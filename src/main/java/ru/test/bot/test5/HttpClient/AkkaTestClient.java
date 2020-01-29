@@ -1,5 +1,6 @@
 package ru.test.bot.test5.HttpClient;
 
+import akka.NotUsed;
 import akka.actor.ActorSystem;
 import akka.http.javadsl.ConnectHttp;
 import akka.http.javadsl.HostConnectionPool;
@@ -12,6 +13,9 @@ import akka.stream.javadsl.Flow;
 import akka.stream.javadsl.Sink;
 import akka.stream.javadsl.Source;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import ru.test.bot.test5.pojo.Message;
 import ru.test.bot.test5.settings.Settings;
 import ru.test.bot.test5.settings.SettingsImpl;
 import scala.util.Try;
@@ -21,6 +25,8 @@ import java.util.concurrent.CompletionStage;
 import java.util.function.Function;
 
 public class AkkaTestClient {
+
+    private ObjectMapper objectMapper = new ObjectMapper();
 
     private final ActorSystem system;
     private final Materializer materializer;
@@ -54,6 +60,10 @@ public class AkkaTestClient {
         return Uri.create(settings.URI + s.orElse("").replace(" ", "%20"));
     }
 
+    private String getApiUri() {
+        return settings.URI;
+    }
+
     public <U> CompletionStage<U> connectionLevel(Optional<String> s,
                                                   Function<HttpResponse, CompletionStage<U>> responseHandler) {
         return Source.single(HttpRequest.create().withUri(getUri(s)))
@@ -75,6 +85,17 @@ public class AkkaTestClient {
         return Http.get(system)
                 .singleRequest(HttpRequest.create().withUri(getUri(s)), materializer)
                 .thenComposeAsync(responseHandler);
+    }
+
+    public <U> CompletionStage<U> apiRequest(String message, Function<HttpResponse, CompletionStage<U>> responseHandler) throws JsonProcessingException {
+        Message body = new Message();
+        body.addMessage(message);
+        System.out.println(objectMapper.writeValueAsString(body));
+        return Http.get(system)
+                .singleRequest(HttpRequest.POST(getApiUri())
+                        .withEntity(HttpEntities.create(ContentTypes.APPLICATION_JSON, objectMapper.writeValueAsString(body))), materializer)
+                .thenComposeAsync(responseHandler);
+
     }
 
 }
