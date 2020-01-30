@@ -1,4 +1,4 @@
-package ru.test.bot.test5.pojo;
+package ru.skholstinin.chatbot.pojo;
 
 
 import java.util.ArrayList;

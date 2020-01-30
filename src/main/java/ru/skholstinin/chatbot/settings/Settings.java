@@ -1,4 +1,4 @@
-package ru.test.bot.test5.settings;
+package ru.skholstinin.chatbot.settings;
 
 import akka.actor.AbstractExtensionId;
 import akka.actor.ExtendedActorSystem;
