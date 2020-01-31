@@ -10,7 +10,7 @@ import akka.stream.Materializer;
 import akka.util.ByteString;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import ru.skholstinin.chatbot.fsm.state.ChatState;
-import ru.skholstinin.chatbot.HttpClient.AkkaTestClient;
+import ru.skholstinin.chatbot.httpclient.AkkaTestClient;
 import ru.skholstinin.chatbot.fsm.models.UninitializedData;
 import ru.skholstinin.chatbot.fsm.messages.MessageFromConsole;
 import ru.skholstinin.chatbot.fsm.messages.MessageToApi;
@@ -65,7 +65,7 @@ public class ChatBotFSM extends AbstractFSM<ChatState, Data> {
     }
 
     private void processMessageToConsole(ActorRef sender, String message) {
-        System.out.println(message);
+        System.out.println(message);//TODO попробовать заменить вывод в конслоь на сообщение другому актору, в котором будет вывод в консоль
         loger.info("processMessageToConsole");
     }
 
@@ -84,7 +84,7 @@ public class ChatBotFSM extends AbstractFSM<ChatState, Data> {
                     .handle((byteString, f) -> {
                         if (f == null) {
                             System.out.println(byteString.utf8String());
-                            System.out.println("Ask next question? Y/n [Y]");
+                            System.out.println("Ask next question? Y/n [Y]");//TODO попробовать заменить вывод в конслоь на сообщение другому актору, в котором будет вывод в консоль
                         } else {
                             System.out.println("Error: " + byteString.utf8String());
                         }

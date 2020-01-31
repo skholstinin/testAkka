@@ -1,4 +1,4 @@
-package ru.skholstinin.chatbot.HttpClient;
+package ru.skholstinin.chatbot.httpclient;
 
 import akka.actor.ActorSystem;
 import akka.http.javadsl.Http;

@@ -1,4 +1,4 @@
-package ru.skholstinin.chatbot.TestBot;
+package ru.skholstinin.chatbot.testbot;
 
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
